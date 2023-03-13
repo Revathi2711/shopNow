@@ -15,7 +15,16 @@ const Product = () => {
 
   const addProduct = (product)=> {
     console.log(product)
-    dispatchCart({type:'ADD_TO_CART',payload:product})
+    const payLoad = {
+      title : product.title,
+      id:product.id,
+      image:product.image,
+      description:product.description,
+      price:product.price,
+      category:product.category,
+      qty:1
+    }
+    dispatchCart({type:'ADD_TO_CART',payload:payLoad})
 }
 const removeFromCart = (product)=>{
   dispatchCart({type:'REMOVE_FROM_CART',payload:product.id})
