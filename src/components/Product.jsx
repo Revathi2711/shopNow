@@ -1,19 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext} from "react";
 import { useDispatch } from "react-redux";
 import { addCart} from "../redux/actions/index";
 import { Link, useParams } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-
+import { CartContext } from "../context/CartContext";
 const Product = () => {
+  const {dispatchCart,cart} = useContext(CartContext);
+  console.log(cart)
   const { id } = useParams();
-  const [product, setProduct] = useEffect([]);
+  
+  const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const dispatch = useDispatch();
-
   const addProduct = (product)=> {
-    dispatch(addCart(product));
+    console.log(product)
+    dispatchCart({type:'ADD_TO_CART',payload:product})
+}
+const removeFromCart = (product)=>{
+  dispatchCart({type:'REMOVE_FROM_CART',payload:product.id})
 }
 
   useEffect(() => {
@@ -71,6 +76,10 @@ const Product = () => {
           onClick={() => addProduct(product)}>
             Add to cart
           </button>
+          {/* <button className="btn btn-outlined-dark px-4 py-2"
+          onClick={() => removeFromCart(product)}>
+            Remove from cart
+          </button> */}
           <Link to="/cart" className="btn btn-dark ms-2 px-3 py-2">
             Go to cart
           </Link>

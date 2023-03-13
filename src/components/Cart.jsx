@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { addCart } from "../redux/actions/index";
 
 const Cart = () => {
-  const state = useSelector((state) => state.handleCart);
+  const state = useSelector((state) => state.handleCart );
   const dispatch = useDispatch();
 
   const handleButton = (product) => {
