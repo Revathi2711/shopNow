@@ -39,7 +39,7 @@ const PlaceOrder = () => {
       'Content-Type':'application/json'
     }})
     console.log(data.status)
-    if(data.status == 'success'){
+    if(data.status === 'success'){
       alert('Order placed successfully')
       dispatchCart({type:'EMPTY'})
       navigate('/')
