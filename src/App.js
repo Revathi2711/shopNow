@@ -4,9 +4,9 @@ import Navbar from "./components/Navbar";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import Products from "./components/Products";
 import Product from "./components/Product";
-import Cart from "./components/Cart";
 import PlaceOrder from "./components/PlaceOrder";
 import { CartContextState } from "./context/CartContext";
+import OrderScreen from "./components/OrderScreen"
 
 const Layout = () => {
   return (
@@ -36,13 +36,18 @@ const router = createBrowserRouter([
         path: "/products/:id",
         element: <Product />,
       },
-      {
+ {
         path: "/Cart",
         element: <Cart />,
       },
+
       {
         path: "/PlaceOrder",
         element: <PlaceOrder />,
+      },
+      {
+        path: "/OrderScreen",
+        element: <OrderScreen />,
       },
     ],
   },

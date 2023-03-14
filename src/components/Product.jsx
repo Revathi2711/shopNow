@@ -1,18 +1,13 @@
 import React, { useState, useEffect, useContext} from "react";
-import { useDispatch } from "react-redux";
-import { addCart} from "../redux/actions/index";
 import { Link, useParams } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { CartContext } from "../context/CartContext";
+
 const Product = () => {
   const {dispatchCart,cart} = useContext(CartContext);
   console.log(cart)
   const { id } = useParams();
-<<<<<<< HEAD
-=======
-  
->>>>>>> f2fe5265d23540c12c765e4f4c40e2b3ab1e8c72
   const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(false);
 
