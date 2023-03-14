@@ -7,7 +7,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 const Product = () => {
   const { id } = useParams();
-  const [product, setProduct] = useEffect([]);
+  const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
