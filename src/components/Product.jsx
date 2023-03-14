@@ -26,9 +26,7 @@ const Product = () => {
     }
     dispatchCart({type:'ADD_TO_CART',payload:payLoad})
 }
-const removeFromCart = (product)=>{
-  dispatchCart({type:'REMOVE_FROM_CART',payload:product.id})
-}
+
 
   useEffect(() => {
     const getProduct = async () => {

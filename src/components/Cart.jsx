@@ -12,10 +12,15 @@ const Product = ({ image, title, price, qty, id }) => {
     dispatchCart({ type: "ADD_QTY", payload: { id, qty: productQty } });
   };
   const reduceQty = () => {
-    if (qty == 0) return;
+    if (qty == 1) return;
     setQty((prev) => prev - 1);
     dispatchCart({ type: "REDUCE_QTY", payload: { id, qty: productQty } });
   };
+
+  const removeFromCart = (product)=>{
+    dispatchCart({type:'REMOVE_FROM_CART',payload:id})
+  }
+
   return (
     <div className="container">
       <div className="px-4 my-5 bg-light rounded-3">
@@ -23,18 +28,25 @@ const Product = ({ image, title, price, qty, id }) => {
           <div className="col-md-4">
             <img src={image} alt={title} height="200px" width="100px"></img>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-4 d-flex flex-column align-items-start">
             <h1>{title}</h1>
-            {/* <p className="lead fw-bold">
-              {qty} % ${price} = ${qty * price}
-            </p> */}
-            <button onClick={reduceQty} className="btn btn-outline-dark me-4">
-              <i className="fa fa-minus"></i>
-            </button>
-            <div>{qty}</div>
-            <button onClick={addQty} className="btn btn-outline-dark me-4">
-              <i className="fa fa-plus"></i>
-            </button>
+            <p className="lead fw-bold">
+              {qty} - ${price} = ${qty * price}
+            </p>
+            <div className="d-flex justify-content-center align-items-center">
+              <button onClick={reduceQty} className="btn btn-outline-dark ">
+                <i className="fa fa-minus"></i>
+              </button>
+              <p className="mt-3 px-5 display-6">{qty}</p>
+              <button onClick={addQty} className="btn btn-outline-dark ">
+                <i className="fa fa-plus"></i>
+              </button>
+            </div>
+            <div>
+              <button onClick={removeFromCart} className="btn my-2 btn-outline-dark">
+                Remove
+              </button>
+            </div>
           </div>
         </div>
       </div>
