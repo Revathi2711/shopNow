@@ -1,9 +1,54 @@
-import React from 'react'
+import React, { useState,useContext} from "react";
+import axios from 'axios'
+import { useNavigate } from "react-router-dom";
+import { CartContext } from "../context/CartContext";
+
 
 const PlaceOrder = () => {
+  const navigate = useNavigate();
+  const {cart,dispatchCart} = useContext(CartContext)
+  const [inputs, setInputs] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+    address: "",
+    country: "",
+    state: "",
+    zip: "",
+  });
+
+  const handleChange = (e) => {
+    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e)=>{
+    e.preventDefault()
+    console.log(inputs)
+    // if (!cart.length) return alert('Please add items to cart')
+    const {data} = await axios.post('http://localhost:1337/api/order/create',{
+      firstname:inputs.firstname,
+      lastname:inputs.lastname,
+      email:inputs.email,
+      address:inputs.address,
+      country:inputs.country,
+      state:inputs.state,
+      zip:inputs.zip,
+      products:cart
+    },{headers:{
+      'Content-Type':'application/json'
+    }})
+    console.log(data.status)
+    if(data.status == 'success'){
+      alert('Order placed successfully')
+      dispatchCart({type:'EMPTY'})
+      navigate('/')
+    }else{
+      alert('Your order did not placed, Please try again')
+    }
+  }
+
   return (
-   
-      <div className="row g-5">
+    <div className="m-5 row g-5">
       <div className="col-md-5 col-lg-4 order-md-last">
         <h4 className="d-flex justify-content-between align-items-center mb-3">
           <span className="text-primary">Your cart</span>
@@ -42,172 +87,139 @@ const PlaceOrder = () => {
             <strong>$20</strong>
           </li>
         </ul>
-
-        <form className="card p-2">
-          <div className="input-group">
-            <input type="text" className="form-control" placeholder="Promo code"/>
-            <button type="submit" className="btn btn-secondary">Redeem</button>
-          </div>
-        </form>
       </div>
-      <div className="col-md-7 col-lg-8">
+      <form onSubmit={handleSubmit} className="col-md-7 col-lg-8">
         <h4 className="mb-3"> Place Order</h4>
-        <form className="needs-validation" novalidate=""/>
-          <div className="row g-3">
-            <div className="col-sm-6">
-              <label for="firstname" className="form-label">First name</label>
-              <input type="text" className="form-control" id="firstname" placeholder="" value="" required=""/>
-              <div className="invalid-feedback">
-                Valid first name is required.
-              </div>
-            </div>
 
-            <div className="col-sm-6">
-              <label for="lastname" className="form-label">Last name</label>
-              <input type="text" className="form-control" id="lastname" placeholder="" value="" required=""/>
-              <div className="invalid-feedback">
-                Valid last name is required.
-              </div>
-            </div>
-
-            <div className="col-12">
-              <label for="username" className="form-label">Username</label>
-              <div className="input-group has-validation">
-                <span className="input-group-text">@</span>
-                <input type="text" className="form-control" id="username" placeholder="Username" required=""/>
-              <div className="invalid-feedback">
-                  Your username is required.
-                </div>
-              </div>
-            </div>
-
-            <div className="col-12">
-              <label for="email" className="form-label">Email <span className="text-muted">(Optional)</span></label>
-              <input type="email" className="form-control" id="email" placeholder="you@example.com"/>
-              <div className="invalid-feedback">
-                Please enter a valid email address for shipping updates.
-              </div>
-            </div>
-
-            <div className="col-12">
-              <label for="address" className="form-label">Address</label>
-              <input type="text" className="form-control" id="address" placeholder="1234 Main St" required=""/>
-              <div className="invalid-feedback">
-                Please enter your shipping address.
-              </div>
-            </div>
-
-            <div className="col-12">
-              <label for="address2" className="form-label">Address 2 <span className="text-muted">(Optional)</span></label>
-              <input type="text" className="form-control" id="address2" placeholder="Apartment or suite"/>
-            </div>
-
-            <div className="col-md-5">
-              <label for="country" className="form-label">Country</label>
-              <select className="form-select" id="country" required="">
-                <option value="">Choose...</option>
-                <option>India</option>
-              </select>
-              <div className="invalid-feedback">
-                Please select a valid country.
-              </div>
-            </div>
-
-            <div className="col-md-4">
-              <label for="state" className="form-label">State</label>
-              <select className="form-select" id="state" required="">
-                <option value="">Choose...</option>
-                <option>UnitedStates</option>
-              </select>
-              <div className="invalid-feedback">
-                Please provide a valid state.
-              </div>
-            </div>
-
-            <div className="col-md-3">
-              <label for="zip" className="form-label">Pincode</label>
-              <input type="text" className="form-control" id="zip" placeholder="" required=""/>
-              <div className="invalid-feedback">
-                Pincode required.
-              </div>
+        <div className="row g-3">
+          <div className="col-sm-6">
+            <label htmlFor="firstname" className="form-label">
+              First name
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="firstname"
+              name="firstname"
+              onChange={handleChange}
+              placeholder=""
+              required=""
+            />
+            <div className="invalid-feedback">
+              Valid first name is required.
             </div>
           </div>
 
-          <hr className="my-4"/>
-
-          <div className="form-check">
-            <input type="checkbox" className="form-check-input" id="same-address"/>
-            <label className="form-check-label" for="same-address">Shipping address is the same as my billing address</label>
+          <div className="col-sm-6">
+            <label htmlFor="lastname" className="form-label">
+              Last name
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="lastname"
+              placeholder=""
+              name="lastname"
+              onChange={handleChange}
+              required=""
+            />
+            <div className="invalid-feedback">Valid last name is required.</div>
           </div>
 
-          <div className="form-check">
-            <input type="checkbox" className="form-check-input" id="save-info"/>
-            <label className="form-check-label" for="save-info">Save this information for next time</label>
-          </div>
-
-          <hr className="my-4"/>
-
-          <h4 className="mb-3">Payment</h4>
-
-          <div className="my-3">
-            <div className="form-check">
-              <input id="credit" name="paymentMethod" type="radio" className="form-check-input" checked="" required=""/>
-              <label className="form-check-label" for="credit">Credit card</label>
-            </div>
-            <div className="form-check">
-              <input id="debit" name="paymentMethod" type="radio" className="form-check-input" required=""/>
-              <label className="form-check-label" for="debit">Debit card</label>
-            </div>
-            <div className="form-check">
-              <input id="paypal" name="paymentMethod" type="radio" className="form-check-input" required=""/>
-              <label className="form-check-label" for="paypal">PayPal</label>
-            </div>
-          </div>
-
-          <div className="row gy-3">
-            <div className="col-md-6">
-              <label for="cc-name" className="form-label">Name on card</label>
-              <input type="text" className="form-control" id="cc-name" placeholder="" required=""/>
-              <small className="text-muted">Full name as displayed on card</small>
-              <div className="invalid-feedback">
-                Name on card is required
-              </div>
-            </div>
-
-            <div className="col-md-6">
-              <label for="cc-number" className="form-label">Credit card number</label>
-              <input type="text" className="form-control" id="cc-number" placeholder="" required=""/>
-              <div className="invalid-feedback">
-                Credit card number is required
-              </div>
-            </div>
-
-            <div className="col-md-3">
-              <label for="cc-expiration" className="form-label">Expiration</label>
-              <input type="text" className="form-control" id="cc-expiration" placeholder="" required=""/>
-              <div className="invalid-feedback">
-                Expiration date required
-              </div>
-            </div>
-
-            <div className="col-md-3">
-              <label for="cc-cvv" className="form-label">CVV</label>
-              <input type="text" className="form-control" id="cc-cvv" placeholder="" required=""/>
-              <div className="invalid-feedback">
-                Security code required
-              </div>
+          <div className="col-12">
+            <label htmlFor="username" className="form-label">
+              Email
+            </label>
+            <div className="input-group has-validation">
+              <span className="input-group-text">@</span>
+              <input
+                type="email"
+                className="form-control"
+                id="email"
+                placeholder="email"
+                name="email"
+                onChange={handleChange}
+                required=""
+              />
+              <div className="invalid-feedback">Your username is required.</div>
             </div>
           </div>
 
-          <form className="my-4">
+          <div className="col-12">
+            <label htmlFor="address" className="form-label">
+              Address
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="address"
+              placeholder="1234 Main St"
+              name="address"
+              onChange={handleChange}
+              required=""
+            />
+            <div className="invalid-feedback">
+              Please enter your shipping address.
+            </div>
+          </div>
 
-          <button className="w-100 btn btn-primary btn-lg" type="submit">Continue to Place Order</button>
-        </form>
-      </div>
+          <div className="col-md-5">
+            <label htmlFor="country" className="form-label">
+              Country
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="country"
+              name="country"
+              onChange={handleChange}
+              placeholder="India"
+            />
+          </div>
+
+          <div className="col-md-4">
+            <label htmlFor="state" className="form-label">
+              State
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="state"
+              onChange={handleChange}
+              placeholder="Karnataka"
+              name="state"
+            />
+          </div>
+
+          <div className="col-md-3">
+            <label htmlFor="zip" className="form-label">
+              Pincode
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="zip"
+              name="zip"
+              onChange={handleChange}
+              placeholder="56006"
+              required=""
+            />
+            <div className="invalid-feedback">Pincode required.</div>
+          </div>
+        </div>
+
+        <hr className="my-4" />
+
+        <h4 className="mb-3">Payment</h4>
+
+        <div className="my-4">
+          <button className="w-100 btn btn-primary btn-lg" type="submit">
+            Place Order
+          </button>
+        </div>
+      </form>
     </div>
-    
-    
-  )
-}
+  );
+};
 
-export default PlaceOrder
+export default PlaceOrder;
