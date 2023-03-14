@@ -2,6 +2,7 @@ import React, { useState,useContext} from "react";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
+import {Link} from "react-router-dom";
 
 
 const PlaceOrder = () => {
@@ -213,10 +214,14 @@ const PlaceOrder = () => {
         <h4 className="mb-3">Payment</h4>
 
         <div className="my-4">
-          <button className="w-100 btn btn-primary btn-lg" type="submit">
+          <Link to="/orderscreen" className="w-100 btn btn-primary btn-lg" type="submit">
             Place Order
-          </button>
+          </Link>
+          
         </div>
+
+
+
       </form>
     </div>
   );

@@ -6,7 +6,8 @@ import Products from "./components/Products";
 import Product from "./components/Product";
 import PlaceOrder from "./components/PlaceOrder";
 import { CartContextState } from "./context/CartContext";
-import OrderScreen from "./components/OrderScreen"
+import OrderScreen from "./components/OrderScreen";
+import Cart from "./components/Cart";
 
 const Layout = () => {
   return (
